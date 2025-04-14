@@ -23,6 +23,18 @@ app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/tasks', taskRoutes);
 
+app.get('/ping', (req, res) => {
+    res.send('pong');
+});
+
+const SELF_URL = process.env.SELF_URL || `http://localhost:${port}/ping`;
+
+setInterval(() => {
+    axios.get(SELF_URL)
+        .then(() => console.log("Self-ping successful"))
+        .catch(err => console.error("Self-ping failed:", err.message));
+}, 2 * 60 * 1000);
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
